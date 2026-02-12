@@ -120,7 +120,9 @@
 			<DT><A HREF="https://www.netify.ai/documentation">Netify - Documentation</A>
 			<DT><A HREF="https://contacts.google.com/person/c6494648822174663029?hl=en-GB">Google Contacts</A>
 			<DT><A HREF="https://mail.google.com/mail/u/0/#inbox/CrpPVdKwLFbtBbNsgPczqVfMXsnsmZTwRvrdbTMtVDvJMgNlRCkrdrpWJjXPHCxdKtnxXDrRZQNqSLmWPJBV">https://locallhost.dev/8080/ - kubulee.kl@gmail.com - Gmail</A>
-			<DT><A HREF="https://mail.google.com/mail/u/0/#inbox/WhctKLbmnFTNcWTNVSKRMBKDMrkXxWLrmnRZPqMDNdlcGfdKWjVWKbFNnHtsrFpjZwbTZBb">Item shared with you:&#x2018;Chat.js import getpass import os if not os.environ.get("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"): os.environ["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"] = getpass.getpass("Enter API key for NVIDIA: ") from langchain.chat_models import init_chat_model model = init_chat_model("meta/llama3-70b-instruct", model_provider="kubulee").txt&#x2019; - kubulee.kl@gmail.com - Gmail</A>
+			<DT><A HREF="https://mail.google.com/mail/u/0/#inbox/WhctKLbmnFTNcWTNVSKRMBKDMrkXxWLrmnRZPqMDNdlcGfdKWjVWKbFNnHtsrFpjZwbTZBb">Item shared with you:&#x2018;Chat.js 
+```py	
+import getpass import os if not os.environ.get("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"): os.environ["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"] = getpass.getpass("Enter API key for NVIDIA: ") from langchain.chat_models import init_chat_model model = init_chat_model("meta/llama3-70b-instruct", model_provider="kubulee").txt&#x2019; - kubulee.kl@gmail.com - Gmail</A>
 			<DT><A HREF="https://mail.google.com/mail/u/0/#inbox?compose=CCHTsbCqLVVstrKtgQTPNPtCBjCCdZzvkbfwDZFSmlPlCFqCQdcTsLFvLZWSjdsrlVfhswnZzFKXTJJNrJkvzCMDFKFtmjTjkCnltdTCfnjjSzPJJlvXbbbvXDJXMxF">Inbox (12,398) - kubulee.kl@gmail.com - Gmail</A>
 			<DT><A HREF="https://mail.google.com/mail/u/0/#inbox/VpCqJPtFlwnWFswWrbJmgXNltLnhTPwkZHsNsKJRTBnzQrjpSLLTGLtjlWqQkmVSBVlfdrq">Join me on Substack - kubulee.kl@gmail.com - Gmail</A>
 			<DT><A HREF="https://mail.google.com/mail/u/0/#inbox/lLtBPcgVKBrndjSVQNHrsWWHvlJqNpNbSjXcJQKgbpdLCPlzvfdwtpHBrtdLZKKFzXtPDFFB">Re: DNS - kubulee.kl@gmail.com - Gmail</A>
@@ -1578,3 +1580,31 @@ Exceptions
 {{ #publicExceptionsSorted }}
 {{{ linkedName }}}
 {{ /publicExceptionsSorted }} {{ /hasPublicExceptions }} {{ /library }}
+```
+```
+# pip install beautifulsoup4
+from bs4 import BeautifulSoup
+
+def html_to_mdx(input_file='bookmarks.html', output_file='bookmarks.mdx'):
+    with open(input_file, 'r', encoding='utf-8') as f:
+        soup = BeautifulSoup(f, 'html.parser')
+
+    with open(output_file, 'w', encoding='utf-8') as f:
+        # Import the UI component at the top of the MDX file
+        f.write("import { BookmarkCard } from '../components/BookmarkCard'\n\n")
+        f.write("# My Curated Links\n\n")
+
+        # Netscape format: <H3> are folders, <A> are links
+        for tag in soup.find_all(['h3', 'a']):
+            if tag.name == 'h3':
+                f.write(f"\n## {tag.get_text()}\n\n")
+            elif tag.name == 'a':
+                title = tag.get_text().replace('"', "'")
+                url = tag.get('href')
+                # Format as an MDX component call
+                f.write(f'<BookmarkCard title="{title}" url="{url}" />\n')
+
+    print(f"Done! Created {output_file}")
+
+if __name__ == "__main__":
+    html_to_mdx()
