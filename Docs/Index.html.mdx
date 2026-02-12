@@ -1,4 +1,131 @@
-<html itemscope itemtype="https://schema.org/WebPage" class="no-js no-ie" lang="en" dir="ltr">                                                                                                                  <script nonce="D4SUUOvsReCYcWH9w4ePzA">
+[https://fasth.ml]
+<html itemscope itemtype="https://web4browser.com/WebPage" class="no-js no-ie" lang="en" dir="ltr">      
+
+```py
+import asyncio, requests
+from fasthtml.common import *
+
+# 1. Setup & Extensions
+hdrs = (
+    Link(rel='stylesheet', href='https://cdn.jsdelivr.net'),
+    Script(src="https://unpkg.com"), # For live crypto
+)
+app, rt = fast_app(hdrs=hdrs)
+
+# Global State (Mocking a user session)
+user_session = {"is_subscribed": False, "username": "Web4User", "theme": "light"}
+
+# --- SHARED COMPONENTS ---
+def Sidebar():
+    return Nav(Ul(
+        Li(A('💬 Web4Chat', hx_get='/web4chat', hx_target='#main-view')),
+        Li(A('🛒 Market Point', hx_get='/market', hx_target='#main-view')),
+        Li(A('💎 Crypto Vendors', hx_get='/crypto', hx_target='#main-view')),
+        Li(A('📺 Streaming', hx_get='/streaming', hx_target='#main-view')),
+        Li(A('🎨 Personalize', hx_get='/personalize', hx_target='#main-view')),
+        Li(A('💳 Subscription', hx_get='/subscriptions', hx_target='#main-view')),
+    ), cls='sidebar', style="width: 260px; border-right: 1px solid #444; height: 100vh; padding: 1rem;")
+
+# --- ROUTES ---
+
+@rt('/')
+def get():
+    return Title("Web4Browser"), Main(
+        Header(Input(type="search", name="q", placeholder="Search Web4Chat...", 
+                     hx_post="/search", hx_target="#main-view")),
+        Div(Sidebar(), Section(H2("Select a channel to begin"), id='main-view', style="flex-grow: 1; padding: 2rem;"),
+            style="display: flex;")
+    )
+
+@rt('/web4chat')
+def get():
+    """Chat Activity: Real-time messaging simulation"""
+    return Div(
+        H2("Web4Chat"),
+        Div(P("System: Welcome to the decentralized chat."), id="chat-box", style="height: 300px; border: 1px solid #ccc; overflow-y: scroll; padding: 10px; margin-bottom: 10px;"),
+        Form(Group(Input(name="msg", placeholder="Type a message..."), Button("Send")), 
+             hx_post="/send-chat", hx_target="#chat-box", hx_swap="beforeend")
+    )
+
+@rt('/send-chat')
+def post(msg: str):
+    return P(f"{user_session['username']}: {msg}")
+
+@rt('/market')
+def get():
+    """Market Point: Subscription check for selling"""
+    can_sell = user_session["is_subscribed"]
+    return Div(
+        H2("Market Point"),
+        P("Only subscribed users can list items for sale."),
+        Form(Group(Input(placeholder="Item name"), Button("List Item")), hx_post="/list") if can_sell 
+        else Card(P("🔒 Subscription Required to Sell"), A(Button("Upgrade"), hx_get="/subscriptions", hx_target="#main-view")),
+        H3("Active Listings"),
+        Grid(Card(H4("Web4 Domain"), P("Price: 0.5 ETH")), Card(H4("Rare NFT"), P("Price: 1.2 ETH")))
+    )
+
+@rt('/streaming')
+def get():
+    """Streaming Channels: YouTube/Twitch Embeds"""
+    return Div(
+        H2("Streaming Channels"),
+        Grid(
+            Div(H4("Live Tech Talk"), 
+                Iframe(src="https://www.youtube.com", width="100%", height="250")),
+            Div(H4("Twitch Gaming"), 
+                Iframe(src="https://player.twitch.tv", width="100%", height="250"))
+        )
+    )
+
+@rt('/crypto')
+def get():
+    """Crypto Vendors with SSE"""
+    def Row(c): return Tr(Td(c.title()), Td(Span("Fetching...", id=f"{c}-price")), Td(Button("Trade", disabled=not user_session["is_subscribed"])))
+    return Div(H2("Crypto Vendors"), Table(Thead(Tr(Th("Asset"), Th("Price"), Th("Action"))), 
+               Tbody(Row("bitcoin"), Row("ethereum"), hx_ext="sse", sse_connect="/price-stream", sse_swap="message")))
+
+@rt('/price-stream')
+async def get():
+    async def publisher():
+        while True:
+            try:
+                res = requests.get("https://api.coingecko.com").json()
+                updates = "".join([f'<span id="{k}-price" hx-swap-oob="true">${v["usd"]:,}</span>' for k,v in res.items()])
+                yield f"data: {updates}\n\n"
+            except: yield "data: <span>Offline</span>\n\n"
+            await asyncio.sleep(10)
+    return EventStream(publisher())
+
+@rt('/personalize')
+def get():
+    """Personalization Settings"""
+    return Div(
+        H2("Personalize Your Browser"),
+        Form(
+            Label("Username", Input(value=user_session["username"], name="username")),
+            Label("Theme", Select(Option("Dark"), Option("Light"), name="theme")),
+            Button("Save Changes"), hx_post="/update-profile", hx_target="#main-view"
+        )
+    )
+
+@rt('/update-profile')
+def post(username: str, theme: str):
+    user_session["username"], user_session["theme"] = username, theme
+    return H3(f"Settings Saved! Welcome, {username}.")
+
+@rt('/subscriptions')
+def get():
+    return Card(H3("Web4 Premium"), P("Unlock Market Sales & Crypto Trading"), 
+                Button("Activate Now", hx_post="/toggle-sub", hx_target="#main-view"))
+
+@rt('/toggle-sub')
+def post():
+    user_session["is_subscribed"] = True
+    return H3("Successfully Subscribed! You can now use all Market & Crypto features.")
+
+serve()
+```
+                                                                                                            <script nonce="D4SUUOvsReCYcWH9w4ePzA">
   function r(p){try{window.stop();}catch(exception){document.execCommand('Stop');}window.location.replace(p+window.location.search)}var ua=navigator.userAgent;if(ua.match(".*NT 5\.[12].*")!==null){ r("/chrome/fallback/") }if(ua.indexOf("MSIE")>=0||ua.indexOf("Trident/7.0") > 0){ r("/chrome/fallback/") }if((!/Chrome|Chromium|CriOS|FxiOS/.test(ua) && (((wk = new RegExp("AppleWebKit\\/(\\d+)").exec(ua)) !== null && parseInt(wk[1]) < 605) || ((v = new RegExp("Version\\/(\\d+).*Safari\\/").exec(ua)) !== null && parseInt(v[1]) <= 14 && (wk = new RegExp("AppleWebKit\\/(\\d+)").exec(ua)) !== null && parseInt(wk[1]) >= 605)))){ r("/chrome/fallback/") }if((/Macintosh.*Firefox\/(11[0-5]|10\d|\d{1,2})\./.test(ua))){ r("/chrome/fallback/") }</script>
   <head>
     <meta charset="utf-8">
