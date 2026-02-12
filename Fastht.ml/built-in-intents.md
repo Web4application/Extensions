@@ -1,5 +1,6 @@
 # App Actions built-in intents
 
+
 Built-in intents (BIIs) model some of the common ways that users express tasks they're trying to do or information they seek, such as starting an exercise, finding parking, or opening a specific feature within an app.
 
 Building App Actions requires you to[implement built-in intents](https://developer.android.com/guide/app-actions/intents). When building App Actions, we recommend implementing and testing all BIIs related to your in-app functionality. By doing so, you can provide a better experience for users who want to trigger App Actions for your app.
