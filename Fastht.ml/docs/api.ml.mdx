@@ -1,8 +1,36 @@
-# PyPI's XML-RPC methods
-https://fastht.ml
+# PyPI's [XML-RPC methods](https://fastht.ml)
 Users of this API are **strongly** encouraged to subscribe to the
     [pypi-announce](https://mail.python.org/mailman3/lists/pypi-announce.python.org/) mailing list for notices as we begin the process of removing
     XML-RPC from PyPI.
+
+```py
+from bs4 import BeautifulSoup
+import json
+
+def export_to_json(input_file='bookmarks.html', output_file='bookmarks.json'):
+    with open(input_file, 'r', encoding='utf-8') as f:
+        soup = BeautifulSoup(f, 'html.parser')
+
+    bookmarks = []
+    current_category = "Uncategorized"
+
+    for tag in soup.find_all(['h3', 'a']):
+        if tag.name == 'h3':
+            current_category = tag.get_text()
+        elif tag.name == 'a':
+            bookmarks.append({
+                "title": tag.get_text(),
+                "url": tag.get('href'),
+                "category": current_category
+            })
+
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(bookmarks, f, indent=4)
+    
+    print(f"Generated {len(bookmarks)} bookmarks in {output_file}")
+
+if __name__ == "__main__":
+    export_to_json()
 
 Example usage (Python 3):
 
@@ -175,3 +203,63 @@ URLs for a given release.
 Use the [JSON API](https://docs.pypi.org/api/json/) or
 [Index API](https://docs.pypi.org/api/index-api/) to query for metadata of a
 given release.
+import { useState } from 'react';
+import bookmarks from '../bookmarks.json'; // The file we just generated
+
+export default function BookmarkSite() {
+  const [search, setSearch] = useState('');
+  const [activeCategory, setActiveCategory] = useState('All');
+
+  // Unique categories for the filter buttons
+  const categories = ['All', ...new Set(bookmarks.map(b => b.category))];
+
+  const filtered = bookmarks.filter(b => {
+    (activeCategory === 'All' || b.category === activeCategory) &&
+    b.title.toLowerCase().includes(search.toLowerCase())
+  });
+
+  return (
+    <div style={{ maxWidth: '800px', margin: 'auto', padding: '20px', fontFamily: 'sans-serif' }}>
+      <h1>🔖 My Library</h1>
+      
+      {/* Search Bar */}
+      <input 
+        type="text" 
+        placeholder="Search bookmarks..." 
+        onChange={(e) => setSearch(e.target.value)}
+        style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', marginBottom: '20px' }}
+      />
+
+      {/* Category Pills */}
+      <div style={{ marginBottom: '20px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+        {categories.map(cat => (
+          <button 
+            key={cat}
+            onClick={() => setActiveCategory(cat)}
+            style={{ 
+              padding: '5px 15px', borderRadius: '20px', cursor: 'pointer',
+              backgroundColor: activeCategory === cat ? '#0070f3' : '#eee',
+              color: activeCategory === cat ? 'white' : 'black',
+              border: 'none'
+            }}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      {/* Bookmark Grid */}
+      <div style={{ display: 'grid', gap: '15px' }}>
+        {filtered.map((b, i) => (
+          <div key={i} style={{ padding: '15px', border: '1px solid #eee', borderRadius: '8px', backgroundColor: '#fff' }}>
+            <a href={b.url} target="_blank" style={{ color: '#0070f3', fontWeight: 'bold', textDecoration: 'none' }}>
+              {b.title}
+            </a>
+            <div style={{ fontSize: '0.8rem', color: '#999', marginTop: '5px' }}>{b.category}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
