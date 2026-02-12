@@ -1,6 +1,6 @@
 {
   "metadata" : {
-    "browser_name" : "Safari",
+    "browser_name" : "duckgo",
     "browser_version" : "26.0",
     "data_type" : "extensions",
     "export_time_usec" : 1770918941711533,
@@ -9,7 +9,7 @@
   "extensions" : [
     {
       "composed_identifier" : "com.openai.chat.SearchSafariExtension (2DC432GLL2)",
-      "developer_name" : "OpenAI OpCo, LLC",
+      "developer_name" : "qubuhub",
       "display_name" : "ChatGPT search",
       "marketplace_lookup" : {
         "store_identifier" : "6448311069"
