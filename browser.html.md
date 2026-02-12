@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>https://fastht.ml
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +12,8 @@
 </head>
 <body onload="initWeb4();">
     <!-- Main Container -->
-    <div class="container">
+
+<div class="container">
         <!-- Navigation Bar -->
         <nav class="navbar">
             <ul>
@@ -26,13 +27,12 @@
                 <li><a href="#callback" onclick="callBack()">Callback</a></li>
             </ul>
         </nav>
-
         <!-- Dynamic Section Loader -->
-        <main id="main-content">
+     
+<main id="main-content">
             <div id="home">
                 <h1>Welcome to Web4 AI</h1>
                 <p>Web4 AI is your decentralized solution for trading, chatting, and much more!</p>
-
                 <!-- Search Engine -->
                 <div class="search-bar">
                     <input type="text" id="search-query" placeholder="Search Web4 functionalities..." />
@@ -42,12 +42,10 @@
             </div>
         </main>
     </div>
-
     <!-- Footer -->
     <footer>
         <p>&copy; 2025 Web4 AI. All rights reserved.</p>
     </footer>
-
     <!-- Facebook SDK -->
     <script>
         window.fbAsyncInit = function() {
@@ -59,7 +57,6 @@
             });
             FB.AppEvents.logPageView();
         };
-
         (function(d, s, id){
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) {return;}
@@ -67,7 +64,6 @@
             js.src = "https://connect.facebook.net/en_US/sdk.js";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
-
         const facebookLogin = () => {
             FB.login((response) => {
                 if (response.authResponse) {
@@ -80,7 +76,6 @@
             });
         };
     </script>
-
     <!-- Web4 Scripts -->
     <script>
         // Initialize Web4
@@ -89,7 +84,6 @@
             connectToMQTT();
             console.log('Web4 initialized.');
         };
-
         // Voice Assistant
         const initSpeechAI = () => {
             if (!('webkitSpeechRecognition' in window)) {
@@ -105,7 +99,6 @@
             recognition.onerror = (event) => console.error('Speech recognition error:', event);
             recognition.start();
         };
-
         const handleVoiceCommand = (command) => {
             if (command.includes('search')) {
                 const query = command.replace('search', '').trim();
@@ -119,7 +112,6 @@
             else if (command.includes('social')) loadSection('social');
             else alert('Command not recognized.');
         };
-
         // MQTT (Real-Time Messaging)
         const connectToMQTT = () => {
             const client = mqtt.connect('wss://broker.hivemq.com:8000/mqtt');
@@ -129,7 +121,6 @@
             });
             client.on('error', (err) => console.error('MQTT Error:', err));
         };
-
         // Search Web4
         const searchWeb4 = async () => {
             const query = document.getElementById('search-query').value;
@@ -138,7 +129,6 @@
             const searchResults = document.getElementById('search-results');
             searchResults.innerHTML = results.map(result => `<p>${result.title || result.description}</p>`).join('');
         };
-
         // Smart Contract Execution (using Ethers.js)
         const executeSmartContract = async () => {
             const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -149,28 +139,23 @@
             const result = await contract.someMethod({ gasLimit: 100000 });
             console.log('Smart contract executed:', result);
         };
-
         // Load Section
         const loadSection = (sectionId) => {
             const sectionTemplate = document.getElementById(sectionId);
             document.getElementById('main-content').innerHTML = sectionTemplate.innerHTML;
         };
-
         // Callback
         const callBack = () => alert('Thank you! Web4 will contact you shortly.');
     </script>
-
     <!-- Dynamic Sections -->
     <template id="trade">
         <h2>Trade</h2>
         <button onclick="executeSmartContract()">Execute Trade</button>
     </template>
-
     <template id="chat">
         <h2>Chat</h2>
         <button onclick="facebookLogin()">Log in with Facebook</button>
     </template>
-
     <template id="social">
         <h2>Social Media</h2>
         <ul>
