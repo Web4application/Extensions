@@ -120,7 +120,7 @@
 			<DT><A HREF="https://www.netify.ai/documentation">Netify - Documentation</A>
 			<DT><A HREF="https://contacts.google.com/person/c6494648822174663029?hl=en-GB">Google Contacts</A>
 			<DT><A HREF="https://mail.google.com/mail/u/0/#inbox/CrpPVdKwLFbtBbNsgPczqVfMXsnsmZTwRvrdbTMtVDvJMgNlRCkrdrpWJjXPHCxdKtnxXDrRZQNqSLmWPJBV">https://locallhost.dev/8080/ - kubulee.kl@gmail.com - Gmail</A>
-			<DT><A HREF="https://mail.google.com/mail/u/0/#inbox/WhctKLbmnFTNcWTNVSKRMBKDMrkXxWLrmnRZPqMDNdlcGfdKWjVWKbFNnHtsrFpjZwbTZBb">Item shared with you: &#x2018;Chat.js import getpass import os if not os.environ.get("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"): os.environ["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"] = getpass.getpass("Enter API key for NVIDIA: ") from langchain.chat_models import init_chat_model model = init_chat_model("meta/llama3-70b-instruct", model_provider="kubulee").txt&#x2019; - kubulee.kl@gmail.com - Gmail</A>
+			<DT><A HREF="https://mail.google.com/mail/u/0/#inbox/WhctKLbmnFTNcWTNVSKRMBKDMrkXxWLrmnRZPqMDNdlcGfdKWjVWKbFNnHtsrFpjZwbTZBb">Item shared with you:&#x2018;Chat.js import getpass import os if not os.environ.get("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"): os.environ["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"] = getpass.getpass("Enter API key for NVIDIA: ") from langchain.chat_models import init_chat_model model = init_chat_model("meta/llama3-70b-instruct", model_provider="kubulee").txt&#x2019; - kubulee.kl@gmail.com - Gmail</A>
 			<DT><A HREF="https://mail.google.com/mail/u/0/#inbox?compose=CCHTsbCqLVVstrKtgQTPNPtCBjCCdZzvkbfwDZFSmlPlCFqCQdcTsLFvLZWSjdsrlVfhswnZzFKXTJJNrJkvzCMDFKFtmjTjkCnltdTCfnjjSzPJJlvXbbbvXDJXMxF">Inbox (12,398) - kubulee.kl@gmail.com - Gmail</A>
 			<DT><A HREF="https://mail.google.com/mail/u/0/#inbox/VpCqJPtFlwnWFswWrbJmgXNltLnhTPwkZHsNsKJRTBnzQrjpSLLTGLtjlWqQkmVSBVlfdrq">Join me on Substack - kubulee.kl@gmail.com - Gmail</A>
 			<DT><A HREF="https://mail.google.com/mail/u/0/#inbox/lLtBPcgVKBrndjSVQNHrsWWHvlJqNpNbSjXcJQKgbpdLCPlzvfdwtpHBrtdLZKKFzXtPDFFB">Re: DNS - kubulee.kl@gmail.com - Gmail</A>
@@ -1501,7 +1501,6 @@ June 27, 2023
 	<DT><A HREF="https://etherscan.io/tx/0x8acb480b5387c2b97e71d00ce3a6f620de2a1deda454639b8dfc90f2c880dc67">Ethereum Transaction Hash: 0x8acb480b53... | Etherscan</A>
 </DL><p>
 <DT><A HREF="http://www.msftconnecttest.com/redirect">MSN</A>
-</HTML>
 {{ #container }} {{ #isClassOrEnum }} {{ #hasPublicConstructors }}
 Constructors
 {{ #publicConstructorsSorted }}
@@ -1541,7 +1540,6 @@ Constants
 {{ #publicConstantFieldsSorted }}
 {{{ linkedName }}}
 {{ /publicConstantFieldsSorted }} {{ /hasPublicConstantFields }} {{ /isClassOrEnumOrExtension }} {{ /container }}
-	
 ***libary***
 {{ #library }} {{ #hasPublicClasses }}
 Classes
