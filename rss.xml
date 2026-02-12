@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title><![CDATA[Changelog]]></title>
+        <description><![CDATA[name.com CORE API updates and announcements]]></description>
+        <link>https://docs.name.com</link>
+        <generator>Mintlify</generator>
+        <lastBuildDate>Thu, 15 Jan 2026 17:35:22 GMT</lastBuildDate>
+        <atom:link href="https://docs.name.com/docs/changelog/rss.xml" rel="self" type="application/rss+xml"/>
+        <copyright><![CDATA[name.com Core API]]></copyright>
+        <docs>https://docs.name.com</docs>
+        <item>
+            <title><![CDATA[January 13, 2026]]></title>
+            <link>https://docs.name.com/docs/changelog#january-13-2026</link>
+            <guid isPermaLink="true">https://docs.name.com/docs/changelog#january-13-2026</guid>
+            <category><![CDATA[Added]]></category>
+            <category><![CDATA[Fixed]]></category>
+            <pubDate>Tue, 13 Jan 2026 17:28:05 GMT</pubDate>
+            <content:encoded><![CDATA[<h3>Added</h3>
+<ul>
+<li><strong>Refunds Endpoint</strong>: New <code>POST /core/v1/refund</code> endpoint to delete eligible domains and privacy products during the Add Grace Period (AGP) and automatically issue refunds for the associated order items.
+<ul>
+<li>Accepts <code>orderId</code> and <code>orderItemIds</code> array in the request body</li>
+<li>Supports <code>registration</code> and <code>whois_privacy</code> product types only</li>
+<li>Includes idempotency support via <code>X-Idempotency-Key</code> header for safe request retries</li>
+<li>Returns detailed refund results including individual item status and total refund amount</li>
+<li>Refunds are issued to the original payment method on file, with fallback to account credit</li>
+<li><strong>Access Restriction</strong>: This endpoint is only available to select approved large API resellers. Contact name.com support to request access.</li>
+</ul>
+</li>
+<li><strong>OrderItem <code>isRefundable</code> Property</strong>: New boolean field on <code>OrderItem</code> indicating whether the item is currently eligible for refund through the Refunds endpoint based on name.com's refund rules.</li>
+<li><strong>List Orders Endpoint</strong>: Updated request has new optional filters to narrow response by domainName, tld, createDate, type and orderStatus.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li><strong>Purchase Privacy</strong>: Now returns <code>409 Conflict</code> when privacy protection already exists on a domain instead of <code>500 Internal Server Error</code>.</li>
+</ul>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[December 11, 2025]]></title>
+            <link>https://docs.name.com/docs/changelog#december-11-2025</link>
+            <guid isPermaLink="true">https://docs.name.com/docs/changelog#december-11-2025</guid>
+            <category><![CDATA[Added]]></category>
+            <category><![CDATA[Changed]]></category>
+            <pubDate>Thu, 11 Dec 2025 21:34:04 GMT</pubDate>
+            <content:encoded><![CDATA[<h3>Added</h3>
+<ul>
+<li><strong>Domain Transfer Out Status Change Webhook</strong>: New <code>domain.transfer_out.status_change</code> webhook that fires when a domain transfer out from name.com to another registrar has completed and the domain has been removed from the account.</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li><strong>Domain Transfer Status Change Webhook</strong>: Clarified that <code>domain.transfer.status_change</code> represents transfer IN to name.com (where name.com is the gaining registrar), and updated webhook descriptions to reflect this.</li>
+</ul>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[November 25, 2025]]></title>
+            <link>https://docs.name.com/docs/changelog#november-25-2025</link>
+            <guid isPermaLink="true">https://docs.name.com/docs/changelog#november-25-2025</guid>
+            <category><![CDATA[Added]]></category>
+            <category><![CDATA[Changed]]></category>
+            <category><![CDATA[Fixed]]></category>
+            <pubDate>Tue, 25 Nov 2025 17:36:27 GMT</pubDate>
+            <content:encoded><![CDATA[<h3>Added</h3>
+<ul>
+<li><strong>TLD Pricing Response Enhancement</strong>: The TLD Price List endpoint now includes retail pricing information in addition to account-level pricing, which applies to registration, renewal, domain restoration, and transfer purchase types. Each pricing entry now provides three price tiers:
+<ul>
+<li>Account-level price (includes account discounts)</li>
+<li>Retail price (includes rebates/promotions/sales, but no account discounts)</li>
+<li>Original/MSRP price (before any discounts)</li>
+</ul>
+</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li><strong>Contact Schema Validation</strong>: Contact schemas have been refactored to separate validation requirements between request and response operations:
+<ul>
+<li><strong>GET Operations (Responses)</strong>: The <code>Contact</code> and <code>RegistrantContact</code> schemas used in API responses now allow nullable fields to accommodate legacy data that may contain null or empty values. This ensures GET operations can successfully return domains with legacy contact information without validation errors.</li>
+<li><strong>POST/PUT Operations (Requests)</strong>: The <code>ContactRequest</code> and <code>RegistrantContactRequest</code> schemas used for creating and updating contacts enforce all validation requirements including:
+<ul>
+<li>Required fields (firstName, lastName, address1, city, state, zip, country, email, phone)</li>
+<li>Minimum length constraints (minLength: 1)</li>
+<li>Format validation (email format, phone/fax E.164 pattern, country code pattern)</li>
+</ul>
+</li>
+<li>This separation ensures that while GET operations can handle legacy data gracefully, all contact creation and update operations continue to enforce proper data validation and formatting requirements.</li>
+</ul>
+</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li><strong>Get Domain Pricing</strong>: Fixed validation order in <code>getPricingForDomain</code> endpoint to check TLD support before year validation. Unsupported TLDs now return <code>422 Unprocessable Entity</code> with the message "TLD not supported" instead of <code>400 Bad Request</code> with a misleading "Invalid value for years for this domain" message.</li>
+<li><strong>Create Domain</strong>: Added TLD privacy support check before adding WhoIs Privacy to orders. Privacy is only added when the TLD supports it, preventing failed order items for unsupported TLDs.</li>
+<li><strong>Purchase Privacy</strong>: Added TLD privacy support validation. Returns <code>422 Unprocessable Entity</code> with message "TLD does not support WhoIs Privacy" when attempting to purchase privacy for unsupported TLDs.</li>
+</ul>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[November 21, 2025]]></title>
+            <link>https://docs.name.com/docs/changelog#november-21-2025</link>
+            <guid isPermaLink="true">https://docs.name.com/docs/changelog#november-21-2025</guid>
+            <category><![CDATA[Changed]]></category>
+            <pubDate>Tue, 25 Nov 2025 17:36:27 GMT</pubDate>
+            <content:encoded><![CDATA[<h3>Changed</h3>
+<ul>
+<li>Cancel Transfer endpoint now returns a 409 conflict if an existing transfer is in a state that cannot be canceled.</li>
+</ul>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[November 20, 2025]]></title>
+            <link>https://docs.name.com/docs/changelog#november-20-2025</link>
+            <guid isPermaLink="true">https://docs.name.com/docs/changelog#november-20-2025</guid>
+            <category><![CDATA[Fixed]]></category>
+            <pubDate>Fri, 21 Nov 2025 19:36:54 GMT</pubDate>
+            <content:encoded><![CDATA[<h3>Fixed</h3>
+<ul>
+<li>A handful of new contact schemas were missing updates to separate Request vs Response. This has been fixed.</li>
+</ul>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[November 18, 2025]]></title>
+            <link>https://docs.name.com/docs/changelog#november-18-2025</link>
+            <guid isPermaLink="true">https://docs.name.com/docs/changelog#november-18-2025</guid>
+            <category><![CDATA[Added]]></category>
+            <category><![CDATA[Fixed]]></category>
+            <pubDate>Fri, 21 Nov 2025 19:36:54 GMT</pubDate>
+            <content:encoded><![CDATA[<h3>Added</h3>
+<ul>
+<li>Create Transfer: Added <code>504 Gateway Timeout</code> response when domain status cannot be retrieved due to blocked-hostname.</li>
+<li>Create Transfer: Added optional <code>warnings</code> object to <code>CreateTransferResponse</code> with <code>message</code> and <code>statuses</code> to surface non-blocking registry status advisories.</li>
+<li>Domain Lock Status Change Webhook: Added <code>ExpirationClientHold</code> to the <code>lockType</code> enum. This lock type is applied to expired domains of configured API Reseller accounts.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li>Create Transfer: Fixed issue where a <code>400 Bad Request</code> was returned for Insufficient Funds instead of the correct <code>402 Payment Required</code> status.</li>
+<li>Get Domain: Fixed intermittent <code>500 Server Error</code> caused by legacy contact data by updating API definitions to allow legacy contacts to be returned while still enforcing correct formatting in requests.</li>
+</ul>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[November 6, 2025]]></title>
+            <link>https://docs.name.com/docs/changelog#november-6-2025</link>
+            <guid isPermaLink="true">https://docs.name.com/docs/changelog#november-6-2025</guid>
+            <category><![CDATA[Added]]></category>
+            <category><![CDATA[Changed]]></category>
+            <pubDate>Fri, 21 Nov 2025 19:36:54 GMT</pubDate>
+            <content:encoded><![CDATA[<h3>Added</h3>
+<ul>
+<li>Domain Claims Period Support: Register domains during trademark claims period.</li>
+<li>New endpoint: <code>GET /core/v1/domaininfo/claims/{domain}</code> returns claim identifiers and validity dates.</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li>TLD Requirements: <code>GET /core/v1/domaininfo/requirements/{tld}</code> now returns <code>claimsCheckRequired</code>.</li>
+<li>Domain Create: <code>POST /core/v1/domains</code> now accepts optional <code>claims</code> object (<code>claimId</code>, <code>notBefore</code>, <code>notAfter</code>) when required by the TLD.</li>
+</ul>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[October 28, 2025]]></title>
+            <link>https://docs.name.com/docs/changelog#october-28-2025</link>
+            <guid isPermaLink="true">https://docs.name.com/docs/changelog#october-28-2025</guid>
+            <category><![CDATA[Added]]></category>
+            <category><![CDATA[Changed]]></category>
+            <pubDate>Fri, 21 Nov 2025 19:36:54 GMT</pubDate>
+            <content:encoded><![CDATA[<h3>Added</h3>
+<ul>
+<li>List Domains: New <code>includeRenewalPrice</code> query parameter.
+<ul>
+<li><code>true</code> (default) includes renewal pricing in responses.</li>
+<li><code>false</code> omits renewal pricing for better performance.</li>
+</ul>
+</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li><code>renewalPrice</code> field is optional when <code>includeRenewalPrice=false</code>.</li>
+<li>Default pagination for List Domains changed from 1000 to 250.</li>
+<li>Removed access restriction on <code>GET /core/v1/contacts/unverified</code> (now available to all reseller accounts).</li>
+<li><code>.at</code> TLD requirement now enforces data acknowledgement.</li>
+</ul>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[October 27, 2025]]></title>
+            <link>https://docs.name.com/docs/changelog#october-27-2025</link>
+            <guid isPermaLink="true">https://docs.name.com/docs/changelog#october-27-2025</guid>
+            <category><![CDATA[Fixed]]></category>
+            <pubDate>Fri, 21 Nov 2025 19:36:54 GMT</pubDate>
+            <content:encoded><![CDATA[<h3>Fixed</h3>
+<ul>
+<li>Create Transfer: Block transfers for domains registered less than 60 days; returns <code>409 Conflict</code> with clear <code>message</code> and <code>details</code>.</li>
+</ul>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[October 15, 2025]]></title>
+            <link>https://docs.name.com/docs/changelog#october-15-2025</link>
+            <guid isPermaLink="true">https://docs.name.com/docs/changelog#october-15-2025</guid>
+            <category><![CDATA[Changed]]></category>
+            <pubDate>Fri, 21 Nov 2025 19:36:54 GMT</pubDate>
+            <content:encoded><![CDATA[<h3>Changed</h3>
+<ul>
+<li>Webhook documentation: standardized response code capitalization from <code>4xx/5xx</code> to <code>4XX/5XX</code>.</li>
+</ul>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[October 14, 2025]]></title>
+            <link>https://docs.name.com/docs/changelog#october-14-2025</link>
+            <guid isPermaLink="true">https://docs.name.com/docs/changelog#october-14-2025</guid>
+            <category><![CDATA[Added]]></category>
+            <category><![CDATA[Fixed]]></category>
+            <pubDate>Fri, 21 Nov 2025 19:36:54 GMT</pubDate>
+            <content:encoded><![CDATA[<h3>Added</h3>
+<ul>
+<li><code>Get Specific TLD Requirements</code>: Added <code>registryOperator</code> parameter.</li>
+<li>Webhook HMAC Header Documentation: <code>X-NAMECOM-SIGNATURE</code> now shown on all webhook endpoints.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li>Request validation now enforces required fields as described in the API documentation.</li>
+</ul>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[October 10, 2025]]></title>
+            <link>https://docs.name.com/docs/changelog#october-10-2025</link>
+            <guid isPermaLink="true">https://docs.name.com/docs/changelog#october-10-2025</guid>
+            <category><![CDATA[Fixed]]></category>
+            <pubDate>Fri, 21 Nov 2025 19:36:54 GMT</pubDate>
+            <content:encoded><![CDATA[<h3>Fixed</h3>
+<ul>
+<li>Create Domain: Now correctly honors <code>privacyEnabled=false</code> instead of overriding with account default when provided.</li>
+</ul>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[October 7, 2025]]></title>
+            <link>https://docs.name.com/docs/changelog#october-7-2025</link>
+            <guid isPermaLink="true">https://docs.name.com/docs/changelog#october-7-2025</guid>
+            <category><![CDATA[Fixed]]></category>
+            <pubDate>Fri, 21 Nov 2025 19:36:54 GMT</pubDate>
+            <content:encoded><![CDATA[<h3>Fixed</h3>
+<ul>
+<li>Get Specific TLD Requirements: Clarified that punycode is expected (not URL-encoded params).</li>
+</ul>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[October 2, 2025]]></title>
+            <link>https://docs.name.com/docs/changelog#october-2-2025</link>
+            <guid isPermaLink="true">https://docs.name.com/docs/changelog#october-2-2025</guid>
+            <category><![CDATA[Added]]></category>
+            <category><![CDATA[Fixed]]></category>
+            <pubDate>Fri, 21 Nov 2025 19:36:54 GMT</pubDate>
+            <content:encoded><![CDATA[<h3>Added</h3>
+<ul>
+<li>Contact model: Added verification status fields.</li>
+<li>Create Domain: Returns <code>451 Unavailable for Legal Reasons</code> where restricted by law.</li>
+<li>Create Domain: Returns detailed validation errors for contact creation failures.</li>
+<li>Webhooks: All webhooks now send <code>X-NAMECOM-SIGNATURE</code> to verify authenticity.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li>Contact Verification List: Corrected <code>createDate</code> and <code>verifyBy</code> values for some contacts.</li>
+</ul>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[September 25, 2025]]></title>
+            <link>https://docs.name.com/docs/changelog#september-25-2025</link>
+            <guid isPermaLink="true">https://docs.name.com/docs/changelog#september-25-2025</guid>
+            <category><![CDATA[Added]]></category>
+            <pubDate>Fri, 21 Nov 2025 19:36:54 GMT</pubDate>
+            <content:encoded><![CDATA[<h3>Added</h3>
+<ul>
+<li>New webhook: <code>domain.lock.status_change</code> with <code>registryStatuses</code> in payload.</li>
+<li>New contact verification APIs (account-restricted):
+<ul>
+<li>List Unverified Contacts</li>
+<li>Verify Contact</li>
+</ul>
+</li>
+</ul>]]></content:encoded>
+        </item>
+    </channel>
+</rss>
