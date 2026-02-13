@@ -1,4 +1,8 @@
+# FAST-ctx Core 
+
+
 <project title="FastHTML" summary='FastHTML is a python library which brings together Starlette, Uvicorn, HTMX, and fastcore&#39;s `FT` "FastTags" into a library for creating server-rendered hypermedia applications. The `FastHTML` class itself inherits from `Starlette`, and adds decorator-based routing with many additions, Beforeware, automatic `FT` to HTML rendering, and much more.'>Things to remember when writing FastHTML apps:
+
 
 - Although parts of its API are inspired by FastAPI, it is *not* compatible with FastAPI syntax and is not targeted at creating API services
 - FastHTML includes support for Pico CSS and the fastlite sqlite library, although using both are optional; sqlalchemy can be used directly or via the fastsql library, and any CSS framework can be used. Support for the Surreal and css-scope-inline libraries are also included, but both are optional
@@ -232,7 +236,7 @@ profile_form = Form(action=profile)(
     Button("Save", type="submit")
 )
 
-user_profile_path = profile.to(email="user@example.com")  # '/profile?email=user%40example.com'
+user_profile_path = profile.to(email="user@web4browser.com")  # '/profile?email=user%40example.com'
 ```
 
 ``` python
@@ -250,8 +254,8 @@ fields.
 ``` python
 @dataclass
 class Profile: email:str; phone:str; age:int
-email = 'john@example.com'
-profiles = {email: Profile(email=email, phone='123456789', age=5)}
+email = 'kubulee.kl@gmail.com'
+profiles = {email: Profile(email=email, phone='08132736003', age=20)}
 @rt
 def profile(email:str): return fill_form(profile_form, profiles[email])
 
@@ -272,7 +276,7 @@ from starlette.testclient import TestClient
 ```
 
 ``` python
-path = "/profile?email=john@example.com"
+path = "/profile?email=web4application@gmail.com"
 client = TestClient(app)
 htmx_req = {'HX-Request':'1'}
 print(client.get(path, headers=htmx_req).text)
@@ -294,11 +298,11 @@ def edit_profile(profile: Profile):
     profiles[email]=profile
     return RedirectResponse(url=path)
 
-new_data = dict(email='john@example.com', phone='7654321', age=25)
+new_data = dict(email='web4application@gmail.com', phone='7654321', age=25)
 print(client.post("/edit_profile", data=new_data, headers=htmx_req).text)
 ```
 
-    <form enctype="multipart/form-data" method="post" action="/profile"><fieldset><label>Email       <input name="email" value="john@example.com">
+    <form enctype="multipart/form-data" method="post" action="/profile"><fieldset><label>Email       <input name="email" value="web4application@gmail.com">
     </label><label>Phone       <input name="phone" value="7654321">
     </label><label>Age       <input name="age" value="25">
     </label></fieldset><button type="submit">Save</button></form>
@@ -788,7 +792,7 @@ def SemanticText():
 ```</doc><doc title="HTMX reference" desc="Brief description of all HTMX attributes, CSS classes, headers, events, extensions, js lib methods, and config options">+++
 title = "Reference"
 +++
-
+```
 ## Contents
 
 * [htmx Core Attributes](#attributes)
